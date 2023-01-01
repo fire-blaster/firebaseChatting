@@ -11,20 +11,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1
     },
-    welcomeText: {
-        color: 'white',
-        fontSize: 24
-    },
-    userInput: {
-        marginTop: 20
-    },
-    emailInput: {
-        marginTop: 20
-    },
-    passwordInput: {
-        marginTop: 20
-    },
-    registerButton: {
+    submitButton: {
         backgroundColor: "#0C6991",
         height: 30,
         justifyContent: "center",
@@ -32,10 +19,5 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 8,
         marginTop: 20
-    },
-    bottomView: {
-        flexDirection: "row",
-        position: "absolute",
-        bottom: 0
     }
 })
