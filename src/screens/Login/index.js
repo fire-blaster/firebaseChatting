@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import { styles } from './style';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
 import MyTextInput from '../../componenets/TextInput';
 
 

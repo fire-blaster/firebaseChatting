@@ -1,10 +1,22 @@
 import { SafeAreaView, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import NetInfo from "@react-native-community/netinfo";
 import { styles } from './style'
 
 
 const Home = () => {
+
+    useEffect(() => {
+        unsubscribe()
+    }, [])
+
+
+    const unsubscribe = NetInfo.addEventListener(state => {
+        console.log("Connection type", state.type);
+        console.log("Is connected?", state.isConnected);
+    });
+
     const [userName, setUserName] = useState(null)
 
 

@@ -12,7 +12,7 @@ if (!getApps().length) {
   initializeApp(firebaseConfig)
 }
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp()
-console.log("App:", app);
+
 const App = () => (
 
   <Provider store={store}>

@@ -15,6 +15,17 @@ export const styles = StyleSheet.create({
         color: 'white',
         fontSize: 24
     },
+    profileTouch: {
+        width: 120,
+        height: 120,
+        borderRadius: 120 / 2
+    },
+    profilePic: {
+        width: 120,
+        height: 120,
+        borderRadius: 120 / 2,
+        resizeMode: "contain"
+    },
     userInput: {
         marginTop: 20
     },
