@@ -218,6 +218,7 @@ android {
             keyPassword 'android'
         }
     }
+    namespace 'com.chatapp'
     buildTypes {
         debug {
             signingConfig signingConfigs.debug

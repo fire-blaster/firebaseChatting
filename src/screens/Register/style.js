@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
     },
     welcomeText: {
         color: 'white',
-        fontSize: 24
+        fontSize: 24,
+        marginBottom:10
     },
     profileTouch: {
         width: 120,

@@ -9,6 +9,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 
 const Register = ({ navigation }) => {
+
+    const [picture, setPicture] = useState(null)
     const [userName, setUserName] = useState(null)
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
@@ -28,13 +30,13 @@ const Register = ({ navigation }) => {
     }
 
     const uploadImage = () => {
-        alert("Upload")
+        // alert("Upload")
         ImagePicker.openPicker({
             width: 300,
             height: 400,
             cropping: true
         }).then(image => {
-            console.log(image);
+            setPicture(image?.path)
         });
     }
 
@@ -53,7 +55,7 @@ const Register = ({ navigation }) => {
                     <Image
                         style={styles.profilePic}
                         source={{
-                            uri: 'https://reactnative.dev/img/tiny_logo.png',
+                            uri: picture === null ? 'https://www.clipartmax.com/png/middle/171-1717870_stockvader-predicted-cron-for-may-user-profile-icon-png.png' : picture,
                         }}
                     />
                 </TouchableOpacity>
