@@ -1,6 +1,5 @@
-
-
-export const firebaseConfig = {
+import { firebase } from '@react-native-firebase/auth';
+const firebaseConfig = {
     apiKey: "AIzaSyBLfKK61Vg4oB7mpomzQ_md7n7hXsZwjPw",
     authDomain: "chatapp-6bc7a.firebaseapp.com",
     databaseURL: "https://chatapp-6bc7a-default-rtdb.firebaseio.com",
@@ -11,4 +10,10 @@ export const firebaseConfig = {
     measurementId: "G-N1R4PJ4ZJD"
 };
 
-
+// if (!firebase.apps.length) {
+//     firebase.initializeApp(firebaseConfig)
+// }
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig)
+}
+export { firebase }

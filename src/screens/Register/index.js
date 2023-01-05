@@ -3,10 +3,6 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from './style'
 import MyTextInput from './../../componenets/TextInput/index';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import auth from '@react-native-firebase/auth';
-import ImagePicker from 'react-native-image-crop-picker';
-
 
 const Register = ({ navigation }) => {
 
@@ -16,29 +12,28 @@ const Register = ({ navigation }) => {
     const [password, setPassword] = useState(null)
 
     const handleRegister = async (userName, email, password) => {
-        AsyncStorage.setItem('username', userName).then(() => {
-            console.log("Username saved", userName)
-        }).catch((error) => {
-            alert(error)
-        });
 
-        auth().createUserWithEmailAndPassword(email, password).then(() => {
-            navigation.navigate("Home")
-        }).catch((error) => {
-            alert(error)
-        })
+        // const storageRef = storage().ref("/pictures");
+        // const fileRef = storageRef.child(`${userName}` + ".jpg")
+        // console.log("storageRef:", fileRef);
+        // AsyncStorage.setItem('username', userName).then(() => {
+        //     console.log("Username saved", userName)
+        // }).catch((error) => {
+        //     alert(error)
+        // });
+
+        // auth().createUserWithEmailAndPassword(email, password).then(() => {
+        //     navigation.navigate("Home")
+        // }).catch((error) => {
+        //     alert(error)
+        // })
+
     }
 
     const uploadImage = () => {
-        // alert("Upload")
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
-        }).then(image => {
-            setPicture(image?.path)
-        });
+        alert("Upload")
     }
+
 
     return (
         <SafeAreaView style={styles.safeContainer}>
