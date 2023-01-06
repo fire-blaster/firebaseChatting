@@ -1,8 +1,10 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { styles } from './style'
 import MyTextInput from './../../componenets/TextInput/index';
+import { registerUser } from './../../api/user';
 
 const Register = ({ navigation }) => {
 
@@ -11,27 +13,30 @@ const Register = ({ navigation }) => {
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
 
-    const handleRegister = async (userName, email, password) => {
-
-        // const storageRef = storage().ref("/pictures");
-        // const fileRef = storageRef.child(`${userName}` + ".jpg")
-        // console.log("storageRef:", fileRef);
-        // AsyncStorage.setItem('username', userName).then(() => {
-        //     console.log("Username saved", userName)
-        // }).catch((error) => {
-        //     alert(error)
-        // });
-
-        // auth().createUserWithEmailAndPassword(email, password).then(() => {
-        //     navigation.navigate("Home")
-        // }).catch((error) => {
-        //     alert(error)
-        // })
+    const handleRegister = async (picture, userName, email, password) => {
+        console.log("picture---:", picture);
+        registerUser(picture, userName, email, password)
 
     }
 
     const uploadImage = () => {
-        alert("Upload")
+        const options = {
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log("User cancelled image picker")
+            } else if (response.errorCode) {
+                alert(response.errorCode)
+            } else {
+                const source = response?.assets[0]?.uri
+                console.log("source:", source);
+                setPicture(source)
+            }
+        })
     }
 
 
@@ -59,6 +64,7 @@ const Register = ({ navigation }) => {
                     placeholder="Username"
                     iconName="person"
                     iconType="material"
+                    value={userName}
                     onChangeText={setUserName}
                 />
 
@@ -67,6 +73,7 @@ const Register = ({ navigation }) => {
                     placeholder="Email"
                     iconName="email"
                     iconType="material"
+                    value={email}
                     onChangeText={setEmail}
                 />
 
@@ -76,13 +83,16 @@ const Register = ({ navigation }) => {
                     iconName="lock"
                     iconType="material"
                     onChangeText={setPassword}
+                    value={password}
                     secureTextEntry
                 />
 
                 <TouchableOpacity
                     style={styles.registerButton}
-                    onPress={() =>
-                        handleRegister(userName, email, password)}>
+                    // onPress={() =>
+                    //     handleRegister()}
+                    onPress={() => { handleRegister(picture, userName, email, password) }}
+                >
                     <Text>Register</Text>
                 </TouchableOpacity>
 
