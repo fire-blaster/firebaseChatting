@@ -1,10 +1,13 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { styles } from './style'
 import MyTextInput from './../../componenets/TextInput/index';
-import { registerUser } from './../../api/user';
+import { addUser, getUser, registerUser } from './../../api/user';
+import { firebase } from '../../config/firebaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Register = ({ navigation }) => {
 
@@ -14,9 +17,19 @@ const Register = ({ navigation }) => {
     const [password, setPassword] = useState(null)
 
     const handleRegister = async (picture, userName, email, password) => {
-        console.log("picture---:", picture);
-        registerUser(picture, userName, email, password)
 
+        const res = await registerUser(picture, userName, email, password)
+        console.log("res:", res);
+        let userID = firebase.auth().currentUser.uid
+        if (userID !== null) {
+            try {
+                await AsyncStorage.setItem('userID', userID)
+            } catch (e) {
+                console.log("Async error:", e);
+            }
+            await addUser(picture, userName, email, userID)
+            navigation.navigate("Home")
+        }
     }
 
     const uploadImage = () => {

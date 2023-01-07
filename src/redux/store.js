@@ -1,22 +1,7 @@
-import { configureStore, createReducer } from '@reduxjs/toolkit';
-import thunk from 'redux-thunk';
+import { createStore } from "@reduxjs/toolkit";
+import statusReducer from './reducer';
 
-const initialState = {
-  count: 0
-};
 
-const reducer = createReducer(initialState, {
-  INCREMENT: state => {
-    state.count++;
-  },
-  DECREMENT: state => {
-    state.count--;
-  }
-});
-
-const store = configureStore({
-  reducer,
-  middleware: [thunk]
-});
+const store=createStore(statusReducer)
 
 export default store;

@@ -1,4 +1,6 @@
 import { firebase } from '@react-native-firebase/auth';
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyBLfKK61Vg4oB7mpomzQ_md7n7hXsZwjPw",
     authDomain: "chatapp-6bc7a.firebaseapp.com",

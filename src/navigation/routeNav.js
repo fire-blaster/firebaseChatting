@@ -16,10 +16,10 @@ const RouteNav = () => {
         screenOptions={{
           headerShown: false
         }}>
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Login" component={Login} />
+        {/* <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Login" component={Login} /> */}
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Forgot" component={Forgot} />
+        {/* <Stack.Screen name="Forgot" component={Forgot} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   )

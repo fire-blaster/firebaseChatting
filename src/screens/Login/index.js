@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import { styles } from './style';
 import MyTextInput from '../../componenets/TextInput';
+import { loginUser } from '../../api/user';
 
 
 const Login = ({ navigation }) => {
@@ -11,18 +12,13 @@ const Login = ({ navigation }) => {
     const [password, setPassword] = useState('');
 
     const handleLogin = async (email, password) => {
-        try {
-            const userCredential = await auth().signInWithEmailAndPassword(email, password)
-            console.log('User signed in successfully: ', userCredential.user.email);
-            alert("Success")
+        const response = await loginUser(email, password)
+        if (response !== null) {
             navigation.navigate("Home")
-        } catch (error) {
-            console.log('Error signing in: ', error);
-            alert("No user found")
         }
     };
 
-    const handleForgot=()=>{
+    const handleForgot = () => {
         navigation.navigate("Forgot")
     }
     return (
@@ -40,6 +36,7 @@ const Login = ({ navigation }) => {
                     viewStyle={styles.emailInput}
                     placeholder="Email"
                     iconName="email"
+                    value={email}
                     iconType="material"
                     onChangeText={setEmail}
                 />
@@ -48,16 +45,17 @@ const Login = ({ navigation }) => {
                     viewStyle={styles.passwordInput}
                     placeholder="Password"
                     iconName="lock"
+                    value={password}
                     iconType="material"
                     onChangeText={setPassword}
                     secureTextEntry
                 />
 
-                <TouchableOpacity 
-                style={styles.forgotPass}
-                onPress={()=>{
-                    handleForgot()
-                }}
+                <TouchableOpacity
+                    style={styles.forgotPass}
+                    onPress={() => {
+                        handleForgot()
+                    }}
                 >
                     <Text>Forgot password?</Text>
                 </TouchableOpacity>
