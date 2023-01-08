@@ -22,8 +22,9 @@ export const addUser = async (picture, userName, email, userID) => {
     console.log("name:", userName);
     console.log("email:", email);
     console.log("userID:", userID);
+
     try {
-        return firebase.database().ref("/users").
+        return firebase.database().ref("/users/" + firebase.auth().currentUser.uid).
             set({
                 userID: userID,
                 userName: userName,
