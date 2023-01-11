@@ -36,6 +36,9 @@ export const styles = StyleSheet.create({
     passwordInput: {
         marginTop: 20
     },
+    genderInput: {
+        marginTop: 20
+    },
     registerButton: {
         backgroundColor: "#0C6991",
         height: 30,

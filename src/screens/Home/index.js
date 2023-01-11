@@ -12,7 +12,7 @@ const Home = () => {
     const [userData, setUserData] = useState(null)
 
     const [allUsers, setAllsuers] = useState([])
-    console.log("allUsers:", allUsers);
+
 
     const dispatch = useDispatch()
     const online = useSelector(state => state?.online)
@@ -47,11 +47,16 @@ const Home = () => {
             await firebase.database().ref("/users/")
                 .on("value", (datasnapshot) => {
                     let users = []
-                    datasnapshot.forEach((child => {
+                    // datasnapshot.forEach((child => {
 
-                        users.push(child)
-                        setAllsuers(users)
-                    }))
+                    //     users.push(child)
+                    //     setAllsuers(users)
+
+                    // }))
+                    for (let key in datasnapshot) {
+                        users.push(datasnapshot[key]);
+                    }
+                    setAllsuers(users);
                 })
 
         }
@@ -80,9 +85,20 @@ const Home = () => {
             <Text style={{ color: "cyane" }}>{userData?.userName}</Text>
             <ScrollView style={{ backgroundColor: "white", flex: 1 }}>
                 <Text style={{ color: "black", fontSize: 25, alignSelf: "center" }}>Chat List</Text>
-                {allUsers.map((item,i)=>{
+                {allUsers.map((item, i) => {
 
-                    console.log("item:",length());
+                    {
+                        item?.childKeys[0] !== undefined ?
+
+
+                        console.log("item.chi", item?.childKeys) :
+                        console.log("Tu ja re")
+                    }
+                    // {
+                    //     item?.childKeys[0] === item?.value?.userID ?
+                    //     console.log("item?.value?.", item?.value?.userName) :
+                    //     console.log("chal ja")
+                    // }
                 })}
 
             </ScrollView>

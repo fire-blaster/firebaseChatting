@@ -1,21 +1,47 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import auth from '@react-native-firebase/auth';
+import database from "@react-native-firebase/database"
 import { styles } from './style';
 import MyTextInput from '../../componenets/TextInput';
-import { loginUser } from '../../api/user';
+import SimpleToast from 'react-native-simple-toast';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/reducers/reducer';
+import auth from '../../services/auth';
+
 
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = async (email, password) => {
-        const response = await loginUser(email, password)
-        if (response !== null) {
-            navigation.navigate("Home")
-        }
+    const handleLogin = async () => {
+        const dispatch = useDispatch()
+        // const response = await loginUser(email, password)
+        console.log("Email:::", email);
+        // if (response !== null) {
+        //     navigation.navigate("Home")
+        // }
+        database().ref("users/")
+            .orderByChild("email")
+            .equalTo(email)
+            .once("value")
+            .then(async snapshot => {
+                if (snapshot.val() === null) {
+                    SimpleToast.show("Invalid Email!")
+                    return false;
+                }
+                let userData = Object.values(snapshot.val())[0]
+
+                if (userData?.password !== password) {
+                    SimpleToast.show("Invalid Password!")
+                    return false;
+                }
+                dispatch(setUser(userData));
+                await auth.setAccount(userData);
+                SimpleToast.show("Login Success!");
+            })
+
     };
 
     const handleForgot = () => {
@@ -32,6 +58,8 @@ const Login = ({ navigation }) => {
                     Login
                 </Text>
 
+
+
                 <MyTextInput
                     viewStyle={styles.emailInput}
                     placeholder="Email"
@@ -39,6 +67,7 @@ const Login = ({ navigation }) => {
                     value={email}
                     iconType="material"
                     onChangeText={setEmail}
+                    keyboardType='email-address'
                 />
 
                 <MyTextInput
@@ -61,8 +90,7 @@ const Login = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.loginButton}
-                    onPress={() =>
-                        handleLogin(email, password)}>
+                    onPress={handleLogin}>
                     <Text>Login</Text>
                 </TouchableOpacity>
 

@@ -1,13 +1,16 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { launchImageLibrary } from 'react-native-image-picker';
 import { styles } from './style'
 import MyTextInput from './../../componenets/TextInput/index';
-import { addUser, getUser, registerUser } from './../../api/user';
-import { firebase } from '../../config/firebaseConfig';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ImagePicker from 'react-native-image-crop-picker';
+import uuid from "react-native-uuid"
+import SimpleToast from 'react-native-simple-toast';
+import database from '@react-native-firebase/database';
 
+
+
+const { width, height } = Dimensions.get("window")
 
 const Register = ({ navigation }) => {
 
@@ -15,41 +18,59 @@ const Register = ({ navigation }) => {
     const [userName, setUserName] = useState(null)
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
+    const [gender, setGender] = useState(null)
 
-    const handleRegister = async (picture, userName, email, password) => {
-
-        const res = await registerUser(picture, userName, email, password)
-        console.log("res:", res);
-        let userID = firebase.auth().currentUser.uid
-        if (userID !== null) {
-            try {
-                await AsyncStorage.setItem('userID', userID)
-            } catch (e) {
-                console.log("Async error:", e);
-            }
-            await addUser(picture, userName, email, userID)
-            navigation.navigate("Home")
+    const handleRegister = async () => {
+        console.log("Prajati,", picture, userName, email, password, gender);
+        if (userName === "" || email === "" || password === "" || gender === "") {
+            SimpleToast.show("Fill all the fields")
+            return false;
         }
+        let userData = {
+            id: uuid.v4(),
+            profilePic: picture,
+            userName: userName,
+            email: email,
+            password: password,
+            gender: gender
+        }
+
+        database().ref("/users/" + userData?.id)
+            .set(userData)
+            .then(() => SimpleToast.show("Register Success!"))
+        setUserName("")
+        setEmail("")
+        setPassword("")
+        setGender("")
+        setPicture("")
+        navigation.navigate("Login")
+
+        // firebase.database().ref("/users/" + userData?.id)
+        //     .set(userData)
+        //     .then(() => SimpleToast.show("Rugister Success!"))
+        // const res = await registerUser(picture, userName, email, password)
+        // console.log("res:", res);
+        // let userID = firebase.auth().currentUser.uid
+        // if (userID !== null) {
+        //     try {
+        //         await AsyncStorage.setItem('userID', userID)
+        //     } catch (e) {
+        //         console.log("Async error:", e);
+        //     }
+        //     await addUser(picture, userName, email, userID)
+        //     navigation.navigate("Home")
+        // }
     }
 
     const uploadImage = () => {
-        const options = {
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
-        launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-                console.log("User cancelled image picker")
-            } else if (response.errorCode) {
-                alert(response.errorCode)
-            } else {
-                const source = response?.assets[0]?.uri
-                console.log("source:", source);
-                setPicture(source)
-            }
-        })
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true
+        }).then(image => {
+            console.log(image?.path);
+            setPicture(image?.path)
+        });
     }
 
 
@@ -100,11 +121,19 @@ const Register = ({ navigation }) => {
                     secureTextEntry
                 />
 
+                <MyTextInput
+                    viewStyle={styles.emailInput}
+                    placeholder="Gender"
+                    iconName="user"
+                    iconType="feather"
+                    value={gender}
+                    onChangeText={setGender}
+                />
+
                 <TouchableOpacity
                     style={styles.registerButton}
-                    // onPress={() =>
-                    //     handleRegister()}
-                    onPress={() => { handleRegister(picture, userName, email, password) }}
+
+                    onPress={handleRegister}
                 >
                     <Text>Register</Text>
                 </TouchableOpacity>
