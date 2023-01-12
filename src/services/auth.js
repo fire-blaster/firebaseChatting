@@ -4,7 +4,11 @@ async function setAccount(data) {
     return await AsyncStorage.set('account', data);
 }
 
-export default {
+async function getAccount() {
+    return await AsyncStorage.get('account');
+}
 
-    setAccount
+export default {
+    setAccount,
+    getAccount
 };

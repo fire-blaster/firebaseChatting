@@ -47,6 +47,7 @@ const Login = ({ navigation }) => {
     const handleForgot = () => {
         navigation.navigate("Forgot")
     }
+    
     return (
         <SafeAreaView
             style={styles.safeContainer}>

@@ -4,6 +4,8 @@ import RouteNav from './src/navigation/routeNav';
 import store from './src/redux/store';
 
 const App = () => (
+
+  
   <Provider store={store}>
     <RouteNav />
   </Provider>
